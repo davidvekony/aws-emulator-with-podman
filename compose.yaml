@@ -1,0 +1,16 @@
+name: aws-emulator
+
+services:
+  emulator:
+    image: localhost/aws-emulator:latest
+    build:
+      context: .
+      dockerfile: Containerfile
+    environment:
+      HOME: ${HOME}
+    ports:
+      - '127.0.0.1:9297:9297'
+    volumes:
+      - '${HOME}/.aws/emulator:${HOME}/.aws/emulator'
+    mem_limit: 2g
+    memswap_limit: 2g
