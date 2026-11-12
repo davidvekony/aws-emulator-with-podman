@@ -9,10 +9,10 @@ The emulator listens on `https://127.0.0.1:9297`. It stores emulated resources i
 You need an Apple silicon Mac. You do not need an AWS account to run the emulator.
 
 1. Install [Homebrew](https://brew.sh/) if you do not have it. Follow its post-installation instructions to add `brew` to your shell.
-2. Open Terminal and install Podman and Podman Compose:
+2. Open Terminal and install Git, Podman and Podman Compose:
 
    ```bash
-   brew install podman podman-compose
+   brew install git podman podman-compose
    ```
 
 3. If you do not have a Podman machine, create and start one:
@@ -33,7 +33,11 @@ The launcher expects Podman and Podman Compose at `/opt/homebrew/bin/podman` and
 
 ## Start the emulator
 
-The commands below assume that this folder is `~/Documents/AWS Emulator`. If it is elsewhere, use its path instead.
+The commands below assume that you clone this repository to `~/aws-emulator-with-podman`. To use another location, change the paths in the commands and the Topgrade entry.
+
+```bash
+git clone https://github.com/davidvekony/aws-emulator-with-podman.git "$HOME/aws-emulator-with-podman"
+```
 
 If the shared directory does not exist, create it:
 
@@ -44,7 +48,7 @@ mkdir -p "$HOME/.aws/emulator"
 Double-click `start.command` in Finder. Alternatively, run:
 
 ```bash
-cd "$HOME/Documents/AWS Emulator"
+cd "$HOME/aws-emulator-with-podman"
 ./start.command
 ```
 
@@ -96,7 +100,7 @@ Create `~/.config/topgrade.toml` if it does not exist. If `~/.config` does not e
 
 ```toml
 [commands]
-"AWS Emulator" = '/opt/homebrew/bin/podman-compose --podman-path /opt/homebrew/bin/podman -f "$HOME/Documents/AWS Emulator/compose.yaml" build --pull=always --no-cache'
+"AWS Emulator" = '/opt/homebrew/bin/podman-compose --podman-path /opt/homebrew/bin/podman -f "$HOME/aws-emulator-with-podman/compose.yaml" build --pull=always --no-cache'
 ```
 
 Run `topgrade` to rebuild the image with your other updates.
@@ -104,7 +108,7 @@ Run `topgrade` to rebuild the image with your other updates.
 To rebuild manually:
 
 ```bash
-cd "$HOME/Documents/AWS Emulator"
+cd "$HOME/aws-emulator-with-podman"
 podman-compose build --pull=always --no-cache
 ```
 
@@ -112,7 +116,7 @@ podman-compose build --pull=always --no-cache
 > The current container keeps using its existing image after a rebuild. To use the new image, remove the container and start it again. This deletes all emulated resources in memory.
 
 ```bash
-cd "$HOME/Documents/AWS Emulator"
+cd "$HOME/aws-emulator-with-podman"
 podman-compose down
 ./start.command
 ```
@@ -126,7 +130,7 @@ To stop and remove the container, run `podman-compose down` from this folder. Th
 To inspect the container or read its logs, run:
 
 ```bash
-cd "$HOME/Documents/AWS Emulator"
+cd "$HOME/aws-emulator-with-podman"
 podman-compose ps
 podman-compose logs --tail 100
 ```
